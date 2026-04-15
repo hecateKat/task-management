@@ -6,7 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
-import java.util.Date;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -25,11 +26,12 @@ public class Attachment {
 
     private String fileName;
 
-    private Date uploadDate;
+    private LocalDateTime uploadDate;
 
+    @Column(name = "is_deleted")
     private boolean isDeleted = false;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "task_id")
     private Task task;
 }
