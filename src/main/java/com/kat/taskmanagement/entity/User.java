@@ -1,12 +1,14 @@
 package com.kat.taskmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,6 +27,7 @@ public class User {
 
     private String username;
 
+    @JsonIgnore
     private String password;
 
     private String email;
@@ -36,12 +39,13 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 
+    @Column(name = "is_deleted")
     private boolean isDeleted = false;
 
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private Set<Project> projects = new HashSet<>();
 }

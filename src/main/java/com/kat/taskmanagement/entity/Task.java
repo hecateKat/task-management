@@ -6,7 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
-import java.util.Date;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -31,15 +32,16 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
 
-    private Date dueDate;
+    private LocalDateTime dueDate;
 
+    @Column(name = "is_deleted")
     private boolean isDeleted = false;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "assignee_id")
     private User assignee;
 }
