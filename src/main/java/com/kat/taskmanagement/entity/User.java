@@ -49,3 +49,4 @@ public class User {
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private Set<Project> projects = new HashSet<>();
 }
+

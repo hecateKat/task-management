@@ -46,3 +46,4 @@ public class Project {
     )
     private Set<User> users = new HashSet<>();
 }
+

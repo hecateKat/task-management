@@ -45,3 +45,4 @@ public class Task {
     @JoinColumn(name = "assignee_id")
     private User assignee;
 }
+
