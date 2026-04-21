@@ -24,8 +24,9 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectMapper projectMapper;
 
     @Override
-    public List<ProjectResponseDto> getAllProjects(Long userId, Pageable pageable) {
-        return projectRepository.findAllByUserId(userId).stream()
+    public List<ProjectResponseDto> getAllProjects(String username, Pageable pageable) {
+        User user = findUserByUsername(username);
+        return projectRepository.findAllByUserId(user.getId()).stream()
                 .map(projectMapper::toDto)
                 .toList();
     }
@@ -37,10 +38,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional
-    public ProjectResponseDto createProject(CreateProjectRequestDto requestDto, Long userId) {
-        User owner = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "User not found with id: " + userId));
+    public ProjectResponseDto createProject(CreateProjectRequestDto requestDto, String username) {
+        User owner = findUserByUsername(username);
         Project project = projectMapper.toEntity(requestDto);
         project.getUsers().add(owner);
         return projectMapper.toDto(projectRepository.save(project));
@@ -67,5 +66,10 @@ public class ProjectServiceImpl implements ProjectService {
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Project not found with id: " + id));
     }
-}
 
+    private User findUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "User not found: " + username));
+    }
+}

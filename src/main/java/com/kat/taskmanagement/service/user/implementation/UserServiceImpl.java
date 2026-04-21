@@ -5,6 +5,7 @@ import com.kat.taskmanagement.dto.user.UpdateUserRequestDto;
 import com.kat.taskmanagement.dto.user.UpdateUserRoleRequestDto;
 import com.kat.taskmanagement.dto.user.UserRegistrationRequestDto;
 import com.kat.taskmanagement.dto.user.UserResponseDto;
+import com.kat.taskmanagement.entity.Role;
 import com.kat.taskmanagement.entity.User;
 import com.kat.taskmanagement.exception.EntityNotFoundException;
 import com.kat.taskmanagement.exception.RegistrationException;
@@ -38,6 +39,7 @@ public class UserServiceImpl implements UserService {
         }
         User user = userMapper.toEntity(requestDto);
         user.setPassword(passwordEncoder.encode(requestDto.password()));
+        user.setRole(Role.USER);
         return userMapper.toDto(userRepository.save(user));
     }
 
